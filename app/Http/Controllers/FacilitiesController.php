@@ -33,7 +33,9 @@ class FacilitiesController extends Controller
     $data_array = array(
       "name" => $request->name,
       "type" => $request->type,
-      "image" => $filename
+      "image" => $filename,
+      "location" => $request->location,
+      "price" => $request->price,
     );
 
     $facility = Facilities::create($data_array);
@@ -74,6 +76,24 @@ class FacilitiesController extends Controller
     }
   }
 
+  // get by id
+  public function get($id) {
+    $facilities = Facilities::find($id);
+
+    if (!is_null($facilities)) {
+      return response()->json([
+        "status" => $this->status_code,
+        "success" => true,
+        "data" => $facilities
+      ]);
+    } else {
+      return response()->json([
+        "status" => "failed",
+        "message" => "Whoops! No data found with this id"
+      ]);
+    }
+  }
+
   // Edit Facility
   public function edit(Request $request, $id) {
     $validator = Validator::make($request->all(), [
@@ -99,7 +119,9 @@ class FacilitiesController extends Controller
       $data_array = array(
         "name" => $request->name,
         "type" => $request->type,
-        "image" => $filename
+        "image" => $filename,
+        "location" => $request->location,
+        "price" => $request->price,
       );
   
       if (!is_null($facility)) {
@@ -126,7 +148,9 @@ class FacilitiesController extends Controller
     } else {
       $data_array = array(
         "name" => $request->name,
-        "type" => $request->type
+        "type" => $request->type,
+        "location" => $request->location,
+        "price" => $request->price,
       );
   
       if (!is_null($facility)) {

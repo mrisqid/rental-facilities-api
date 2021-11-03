@@ -13,5 +13,7 @@ class Facilities extends Model
       'name',
       'type',
       'image',
+      'location',
+      'price',
     ];
 }

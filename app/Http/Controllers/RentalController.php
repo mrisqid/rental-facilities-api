@@ -18,8 +18,9 @@ class RentalController extends Controller
       "identity_card.*" => "required|image|mimes:jpeg,png,jpg,gif,svg|max:2048",
       "phone_number" => "required",
       "organization_image.*" => "image|mimes:jpeg,png,jpg,gif,svg|max:2048",
-      "facilities" => "required|array",
-      "date" => "required",
+      "facilities" => "required",
+      "date_start" => "required",
+      "date_end" => "required",
       "file.*" => "file|max:2048",
     ]);
 
@@ -51,7 +52,8 @@ class RentalController extends Controller
       'organization_address' => $request->organization_address,
       'organization_image' => $organization_image_filename,
       'facilities' => $request->facilities,
-      'date' => date('Y-m-d H:i:s',strtotime($request->date)),
+      'date_start' => date('Y-m-d',strtotime($request->date_start)),
+      'date_end' => date('Y-m-d',strtotime($request->date_end)),
       'message' => $request->message,
       'file' => $file_filename
     );

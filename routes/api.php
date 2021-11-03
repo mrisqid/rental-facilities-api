@@ -35,6 +35,7 @@ Route::group(["prefix" => "user", "as" => "user"], function () {
 Route::group(["prefix" => "facility", "as" => "facility"], function () {
   Route::post("/create", [FacilitiesController::class, 'create']);
   Route::get("/list", [FacilitiesController::class, 'list']);
+  Route::get("/get/{id}", [FacilitiesController::class, 'get']);
   Route::post("/edit/{id}", [FacilitiesController::class, 'edit']);
   Route::delete("/delete/{id}", [FacilitiesController::class, 'delete']);
 });

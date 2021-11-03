@@ -17,13 +17,14 @@ class Rental extends Model
       'organization_address',
       'organization_image',
       'facilities',
-      'date',
+      'date_start',
+      'date_end',
       'message',
       'file'
     ];
 
     protected $casts = [
-      'facilities' => 'array',
-      'date' => 'datetime'
+      'date_start' => 'date',
+      'date_end' => 'date'
     ];
 }
