@@ -15,7 +15,8 @@ class UserController extends Controller
     $validator = Validator::make($request->all(), [
       "username" => "required",
       "email" => "required|email",
-      "password" => "required"
+      "password" => "required",
+      "level",
     ]);
 
     if ($validator->fails()) {
@@ -29,7 +30,8 @@ class UserController extends Controller
     $userDataArray = array(
       "username" => $request->username,
       "email" => $request->email,
-      "password" => md5($request->password)
+      "password" => md5($request->password),
+      "level" => $request->level
     );
 
     $user_status = User::where("email", $request->email)->first();
@@ -62,7 +64,7 @@ class UserController extends Controller
 
   // User List
   public function userList() {
-    $users = User::all();
+    $users = User::where("level", "admin")->get();
     if (count($users) > 0) {
       return response()->json([
         "status" => $this->status_code,
@@ -180,7 +182,7 @@ class UserController extends Controller
     }
   }
 
-  // User Detail
+  // Get User by Email
   public function userDetail($email) {
     $user = array();
 
@@ -188,6 +190,24 @@ class UserController extends Controller
       $user = User::where("email", $email)->first();
 
       return $user;
+    }
+  }
+
+  // get User by Id
+  public function get($id) {
+    $user = User::find($id);
+
+    if (!is_null($user)) {
+      return response()->json([
+        "status" => $this->status_code,
+        "success" => true,
+        "data" => $user
+      ]);
+    } else {
+      return response()->json([
+        "status" => "failed",
+        "message" => "Whoops! No data found with this id"
+      ]);
     }
   }
 

@@ -20,7 +20,9 @@ class Rental extends Model
       'date_start',
       'date_end',
       'message',
-      'file'
+      'file',
+      'user_id',
+      'file_approve',
     ];
 
     protected $casts = [

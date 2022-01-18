@@ -10,7 +10,7 @@ class RentalController extends Controller
 {
   private $status_code = 200;
 
-  // Create Facilities
+  // Create Rental
   public function create(Request $request) {
     $validator = Validator::make($request->all(), [
       "name" => "required",
@@ -22,6 +22,7 @@ class RentalController extends Controller
       "date_start" => "required",
       "date_end" => "required",
       "file.*" => "file|max:2048",
+      "user_id" => "required",
     ]);
 
     if ($validator->fails()) {
@@ -55,7 +56,8 @@ class RentalController extends Controller
       'date_start' => date('Y-m-d',strtotime($request->date_start)),
       'date_end' => date('Y-m-d',strtotime($request->date_end)),
       'message' => $request->message,
-      'file' => $file_filename
+      'file' => $file_filename,
+      'user_id' => $request->user_id,
     );
 
     $rental = Rental::create($data_array);
@@ -76,7 +78,7 @@ class RentalController extends Controller
     }
   }
 
-  // List Facilities
+  // List Rental
   public function list() {
     $rental = Rental::all();
 
@@ -92,6 +94,106 @@ class RentalController extends Controller
         "status" => "failed",
         "success" => false,
         "message" => "Whoops! No data found"
+      ]);
+    }
+  }
+
+  // Rental list by userId
+  public function listById($id) {
+    $rental = array();
+
+    if (!is_null($id)) {
+      $rental = Rental::where("user_id", $id)->get();
+
+      return $rental;
+    }
+  }
+
+  // Rental Detail
+  public function detail($id) {
+    $rental = array();
+
+    if (!is_null($id)) {
+      $rental = Rental::where("id", $id)->first();
+
+      return $rental;
+    }
+  }
+
+  // Update status rental
+  public function updateStatus(Request $request, $id) {
+    $rental_array = array(
+      "status" => $request->status
+    );
+
+    $rental_exist = Rental::find($id);
+
+    if (!is_null($rental_exist)) {
+      $updated_status = Rental::where("id", $id)->update($rental_array);
+
+      if ($updated_status = 1) {
+        return response()->json([
+          "status" => $this->status_code,
+          "success" => true,
+          "message" => "Rental updated successfully"
+        ]);
+      } else {
+        return response()->json([
+          "status" => "failed",
+          "message" => "Whoops! rental status failed to update"
+        ]);
+      }
+    } else {
+      return response()->json([
+        "status" => "failed",
+        "message" => "Whoops! No rental found with this id"
+      ]);
+    }
+  }
+
+  // Upload file bukti persetujuan
+  public function uploadFileApprove(Request $request, $id) {
+    $validator = Validator::make($request->all(), [
+      "file_approve.*" => "file|max:2048|required",
+    ]);
+
+    if ($validator->fails()) {
+      return response()->json([
+        "status" => "failed",
+        "message" => "validation_error",
+        "errors" => $validator->errors()
+      ]);
+    }
+
+    $file = $request->file_approve;
+    $file_filename = time().rand(0, 3). ".".$file->getClientOriginalExtension();
+    $file->move("uploads/file-approve/", $file_filename);
+
+    $data_array = array(
+      'file_approve' => $file_filename,
+    );
+
+    $rental_exist = Rental::find($id);
+
+    if (!is_null($rental_exist)) {
+      $updated_status = Rental::where("id", $id)->update($data_array);
+
+      if ($updated_status = 1) {
+        return response()->json([
+          "status" => $this->status_code,
+          "success" => true,
+          "message" => "File Approve Uploaded successfully"
+        ]);
+      } else {
+        return response()->json([
+          "status" => "failed",
+          "message" => "Whoops! File Approve failed to update"
+        ]);
+      }
+    } else {
+      return response()->json([
+        "status" => "failed",
+        "message" => "Whoops! No rental found with this id"
       ]);
     }
   }

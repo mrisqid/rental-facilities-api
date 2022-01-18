@@ -28,6 +28,7 @@ Route::group(["prefix" => "user", "as" => "user"], function () {
   Route::post("/edit/{id}", [UserController::class, 'userEdit']);
   Route::post("/login", [UserController::class, 'userLogin']);
   Route::get("/detail/{email}", [UserController::class, 'userDetail']);
+  Route::get("/detail-id/{id}", [UserController::class, 'get']);
   Route::delete("/delete/{id}", [UserController::class, 'userDelete']);
 });
 
@@ -44,4 +45,8 @@ Route::group(["prefix" => "facility", "as" => "facility"], function () {
 Route::group(["prefix" => "rental", "as" => "rental"], function () {
   Route::post("/create", [RentalController::class, 'create']);
   Route::get("/list", [RentalController::class, 'list']);
+  Route::get("/get/{id}", [RentalController::class, 'detail']);
+  Route::get("/list/{id}", [RentalController::class, 'listById']);
+  Route::post("/status/{id}", [RentalController::class, 'updateStatus']);
+  Route::post("/approve/{id}", [RentalController::class, 'uploadFileApprove']);
 });
