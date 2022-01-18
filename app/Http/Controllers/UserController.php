@@ -101,7 +101,6 @@ class UserController extends Controller
     );
 
     $user_status = User::where("email", $request->email)->first();
-    echo($user_status);
     if (!is_null($user_status) && $user_status->id != $id) {
       return response()->json([
         "status" => "failed",
