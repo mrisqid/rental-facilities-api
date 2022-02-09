@@ -15,16 +15,20 @@ class CreateRentalsTable extends Migration
     {
         Schema::create('rentals', function (Blueprint $table) {
             $table->id();
+            $table->integer('user_id');
             $table->string('name');
             $table->string('identity_card');
             $table->string('phone_number');
             $table->string('organization_name');
             $table->string('organization_address');
             $table->string('organization_image');
-            $table->json('facilities');
-            $table->dateTime('date');
+            $table->integer('facilities');
             $table->string('message');
             $table->string('file');
+            $table->date('date_start');
+            $table->date('date_end');
+            $table->integer('status')->default(0);
+            $table->string('file_approve')->nullable();
             $table->timestamps();
         });
     }
