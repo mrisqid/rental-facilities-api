@@ -14,7 +14,8 @@ class ModifyColumnRentalTable extends Migration
   public function up()
   {
       Schema::table('rentals', function (Blueprint $table) {
-          $table->integer('facilities')->change();
+          $table->dropColumn('facilities');
+          $table->integer('facilities');
           $table->dropColumn('date');
           $table->date('date_start');
           $table->date('date_end');
