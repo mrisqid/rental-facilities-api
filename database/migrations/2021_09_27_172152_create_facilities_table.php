@@ -18,6 +18,8 @@ class CreateFacilitiesTable extends Migration
             $table->string('name');
             $table->string('type')->nullable();
             $table->string('image')->nullable();
+            $table->string('location')->nullable();
+            $table->integer('price')->nullable();
             $table->timestamps();
         });
     }
