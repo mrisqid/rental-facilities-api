@@ -29,8 +29,8 @@ class ModifyColumnRentalTable extends Migration
    */
   public function down()
   {
+    DB::statement('ALTER TABLE rentals ALTER COLUMN facilities TYPE json USING (facilities)::json');
     Schema::table('facilities', function (Blueprint $table) {
-        $table->json('facilities')->change();
         $table->dateTime('date');
         $table->dropColumn('date_start');
         $table->dropColumn('date_end');
