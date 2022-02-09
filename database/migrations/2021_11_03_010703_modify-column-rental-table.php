@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 class ModifyColumnRentalTable extends Migration
 {
@@ -13,9 +14,8 @@ class ModifyColumnRentalTable extends Migration
    */
   public function up()
   {
+      DB::statement('ALTER TABLE rentals ALTER COLUMN facilities TYPE integer USING (trim(facilities))::integer');
       Schema::table('rentals', function (Blueprint $table) {
-          $table->dropColumn('facilities');
-          $table->integer('facilities');
           $table->dropColumn('date');
           $table->date('date_start');
           $table->date('date_end');
