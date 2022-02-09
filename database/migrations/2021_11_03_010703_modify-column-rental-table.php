@@ -14,7 +14,7 @@ class ModifyColumnRentalTable extends Migration
    */
   public function up()
   {
-      DB::statement('ALTER TABLE rentals ALTER COLUMN facilities TYPE integer USING (trim(facilities))::integer');
+      DB::statement('ALTER TABLE rentals ALTER COLUMN facilities TYPE integer USING (facilities)::integer');
       Schema::table('rentals', function (Blueprint $table) {
           $table->dropColumn('date');
           $table->date('date_start');
