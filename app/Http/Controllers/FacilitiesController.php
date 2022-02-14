@@ -28,7 +28,7 @@ class FacilitiesController extends Controller
 
     $image = $request->image;
     $filename = time().rand(0, 3). ".".$image->getClientOriginalExtension();
-    $image->move("uploads/", $filename);
+    $image->move("uploads/facility/", $filename);
 
     $data_array = array(
       "name" => $request->name,
